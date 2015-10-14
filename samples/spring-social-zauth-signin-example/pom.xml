@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.zalando.zauth</groupId>
     <artifactId>samples</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
   </parent>
   <artifactId>spring-social-zauth-signin-example</artifactId>
 
