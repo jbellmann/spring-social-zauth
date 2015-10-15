@@ -8,7 +8,7 @@ Spring-Social integration to use ZAuth for Authentication in a Spring-Applicatio
 Clone the repo:
 
 ```
-git clone git@github.com:zalando/spring-social-zauth.git
+git clone https://github.com/zalando/spring-social-zauth.git
 ```
 
 Then build with Maven-Wrapper (if you are bound to Maven version 3.0.5 to be installed on your machine):
