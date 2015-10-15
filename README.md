@@ -1,6 +1,27 @@
-# spring-social-zauth
-Spring-Social support for Z-Auth.
+###Spring-Social-ZAuth
 
+Spring-Social integration to use ZAuth for Authentication in a Spring-Application together with Spring-Security.
+
+
+###How to build
+
+Clone the repo:
+
+```
+git clone git@github.com:zalando/spring-social-zauth.git
+```
+
+Then build with Maven-Wrapper (if you are bound to Maven version 3.0.5 to be installed on your machine):
+
+```
+./mvnw install
+```
+
+.. or when you are hopefully not bound to this anymore and Maven installed >= 3.3.x
+
+```
+mvn install
+```
 
 ## License
 
