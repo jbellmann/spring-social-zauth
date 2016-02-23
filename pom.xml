@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.zalando.zauth</groupId>
 	<artifactId>spring-social-zauth-parent</artifactId>
-	<version>0.9.1-SNAPSHOT</version>
+	<version>0.10.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -21,7 +21,7 @@
 		<url>https://github.com/zalando/spring-social-zauth</url>
 		<connection>scm:git:https://github.com/zalando/spring-social-zauth.git</connection>
 		<developerConnection>scm:git:https://github.com/zalando/spring-social-zauth.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>0.10.0</tag>
   </scm>
 
 	<licenses>
