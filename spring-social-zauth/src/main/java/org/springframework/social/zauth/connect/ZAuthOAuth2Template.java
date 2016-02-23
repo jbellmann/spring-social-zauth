@@ -15,21 +15,24 @@
  */
 package org.springframework.social.zauth.connect;
 
-import org.springframework.social.oauth2.OAuth2Template;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
+import org.springframework.social.oauth2.DynamicOAuth2Template;
+import org.springframework.social.oauth2.OAuth2TemplateConfiguration;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
-public class ZAuthOAuth2Template extends OAuth2Template {
+public class ZAuthOAuth2Template extends DynamicOAuth2Template {
 
     private static final String AUTHORIZE_URL = "https://auth.zalando.com/oauth2/authorize";
-    private static final String TOKENINFO_URL = "https://auth.zalando.com/oauth2/access_token?realm=employees";
+    private static final String ACCESS_TOKEN_URL = "https://auth.zalando.com/oauth2/access_token?realm=employees";
 
-    public ZAuthOAuth2Template(final String clientId, final String clientSecret) {
-        this(clientId, clientSecret, AUTHORIZE_URL, TOKENINFO_URL);
+    public ZAuthOAuth2Template(ClientCredentialsSupplier clientCredentialsSupplier) {
+        this(clientCredentialsSupplier, AUTHORIZE_URL, ACCESS_TOKEN_URL);
     }
-    
-    public ZAuthOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String tokenInfoUrl){
-    	super(clientId, clientSecret, authorizeUrl, tokenInfoUrl);
+
+    public ZAuthOAuth2Template(ClientCredentialsSupplier clientCredentialsSupplier,
+            String authorizeUrl, String accessTokenUrl) {
+        super(new OAuth2TemplateConfiguration(clientCredentialsSupplier, authorizeUrl, accessTokenUrl));
     }
 }

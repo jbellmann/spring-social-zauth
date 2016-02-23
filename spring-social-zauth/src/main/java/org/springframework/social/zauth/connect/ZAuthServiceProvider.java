@@ -16,18 +16,20 @@
 package org.springframework.social.zauth.connect;
 
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.social.zauth.api.impl.ZAuthTemplate;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class ZAuthServiceProvider extends AbstractOAuth2ServiceProvider<ZAuth> {
 
-    public ZAuthServiceProvider(final String clientId, final String clientSecret) {
-        super(new ZAuthOAuth2Template(clientId, clientSecret));
+    public ZAuthServiceProvider(ClientCredentialsSupplier clientCredentialsSupplier) {
+        super(new ZAuthOAuth2Template(clientCredentialsSupplier));
     }
 
+    @Override
     public ZAuth getApi(final String accessToken) {
         return new ZAuthTemplate(accessToken);
     }

@@ -17,20 +17,19 @@ package org.springframework.social.zauth.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.core.env.Environment;
-
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.SocialConfigurer;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.security.SocialAuthenticationServiceRegistry;
 import org.springframework.social.zauth.security.ZAuthAuthenticationService;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer {
 
@@ -53,15 +52,16 @@ public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer 
     public UsersConnectionRepository getUsersConnectionRepository(
             final ConnectionFactoryLocator connectionFactoryLocator) {
 
-        // this is hacky, but didn't found out how to do these configuration without it
+        final ClientCredentialsSupplier ccs = getClientCredentialsSupplier();
+        // this is hacky, but didn't found out how to do these configuration
+        // without it
         if (connectionFactoryLocator instanceof SocialAuthenticationServiceRegistry) {
             log.debug("Initialize ConnectionFactory with key {} and secret {}",
-                getClientId().substring(0, getClientIdSubstringLenght()),
-                getClientSecret().substring(0, getClientSecretIdSubstringCount()));
+                    ccs.getClientId().substring(0, getClientIdSubstringLenght()),
+                    ccs.getClientSecret().substring(0, getClientSecretIdSubstringCount()));
 
-            SocialAuthenticationServiceRegistry registry = (SocialAuthenticationServiceRegistry)
-                connectionFactoryLocator;
-            registry.addAuthenticationService(new ZAuthAuthenticationService(getClientId(), getClientSecret()));
+            SocialAuthenticationServiceRegistry registry = (SocialAuthenticationServiceRegistry) connectionFactoryLocator;
+            registry.addAuthenticationService(new ZAuthAuthenticationService(ccs));
         }
 
         return doGetUsersConnectionRepository(connectionFactoryLocator);
@@ -70,9 +70,7 @@ public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer 
     protected abstract UsersConnectionRepository doGetUsersConnectionRepository(
             ConnectionFactoryLocator connectionFactoryLocator);
 
-    protected abstract String getClientId();
-
-    protected abstract String getClientSecret();
+    protected abstract ClientCredentialsSupplier getClientCredentialsSupplier();
 
     protected int getClientIdSubstringLenght() {
         return 8;

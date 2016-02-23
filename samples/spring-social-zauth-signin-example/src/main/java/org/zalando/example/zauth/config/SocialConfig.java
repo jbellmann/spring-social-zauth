@@ -23,6 +23,7 @@ import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.zauth.config.AbstractZAuthSocialConfigurer;
 import org.zalando.example.zauth.services.AccountConnectionSignupService;
 
@@ -51,14 +52,8 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
     }
 
     @Override
-    protected String getClientId() {
-
-        return zauthProperties.getClientId();
+    protected ClientCredentialsSupplier getClientCredentialsSupplier() {
+        return new CredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
     }
 
-    @Override
-    protected String getClientSecret() {
-
-        return zauthProperties.getClientSecret();
-    }
 }

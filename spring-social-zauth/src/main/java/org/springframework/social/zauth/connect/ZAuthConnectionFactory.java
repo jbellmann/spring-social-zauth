@@ -18,17 +18,18 @@ package org.springframework.social.zauth.connect;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.zauth.api.ZAuth;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class ZAuthConnectionFactory extends OAuth2ConnectionFactory<ZAuth> {
-	
-	public static final String PROVIDER_ID = "zauth";
 
-    public ZAuthConnectionFactory(final String clientId, final String clientSecret) {
-        super(PROVIDER_ID, new ZAuthServiceProvider(clientId, clientSecret), new ZAuthAdapter());
+    public static final String PROVIDER_ID = "zauth";
+
+    public ZAuthConnectionFactory(ClientCredentialsSupplier clientCredentialsSupplier) {
+        super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier), new ZAuthAdapter());
     }
 
     @Override

@@ -18,4 +18,5 @@ spring:
 zauth:
     clientId: yourClientId
     clientSecret: 'yourClientSecret' # we use 'ticks' here, because 'clientSecret' sometimes contains 'yaml-sensitive-tokens'
+    credentialsDirectoryPath: ${user.dir}/credentials
 

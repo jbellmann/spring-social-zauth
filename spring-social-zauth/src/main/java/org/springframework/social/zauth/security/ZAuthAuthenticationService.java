@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.social.security.SocialAuthenticationRedirectException;
 import org.springframework.social.security.SocialAuthenticationToken;
@@ -40,8 +41,8 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
 
     private String defaultScope = DEFAULT_SCOPE;
 
-    public ZAuthAuthenticationService(final String clientId, final String clientSecret) {
-        super(new ZAuthConnectionFactory(clientId, clientSecret));
+    public ZAuthAuthenticationService(ClientCredentialsSupplier clientCredentialsSupplier) {
+        super(new ZAuthConnectionFactory(clientCredentialsSupplier));
     }
 
     @Override

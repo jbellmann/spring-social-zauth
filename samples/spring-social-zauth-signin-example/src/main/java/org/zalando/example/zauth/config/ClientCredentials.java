@@ -15,27 +15,23 @@
  */
 package org.zalando.example.zauth.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Only for this example. Not official part of the lib. Could be done this way.
- *
- * @author  jbellmann
- */
-@ConfigurationProperties(prefix = "zauth")
-public class ZAuthProperties {
+@JsonIgnoreProperties(ignoreUnknown = true)
+class ClientCredentials {
 
+    @JsonProperty("client_id")
     private String clientId;
 
+    @JsonProperty("client_secret")
     private String clientSecret;
-
-    private String credentialsDirectoryPath;
 
     public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(final String clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
@@ -43,16 +39,7 @@ public class ZAuthProperties {
         return clientSecret;
     }
 
-    public void setClientSecret(final String clientSecret) {
+    public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
-
-    public String getCredentialsDirectoryPath() {
-        return credentialsDirectoryPath;
-    }
-
-    public void setCredentialsDirectoryPath(String credentialsDirectoryPath) {
-        this.credentialsDirectoryPath = credentialsDirectoryPath;
-    }
-
 }
