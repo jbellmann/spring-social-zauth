@@ -25,7 +25,7 @@ import org.springframework.social.oauth2.OAuth2TemplateConfiguration;
 public class ZAuthOAuth2Template extends DynamicOAuth2Template {
 
     private static final String AUTHORIZE_URL = "https://auth.zalando.com/oauth2/authorize";
-    private static final String ACCESS_TOKEN_URL = "https://auth.zalando.com/oauth2/access_token?realm=employees";
+    private static final String ACCESS_TOKEN_URL = "https://auth.zalando.com/oauth2/access_token?realm=/employees";
 
     public ZAuthOAuth2Template(ClientCredentialsSupplier clientCredentialsSupplier) {
         this(clientCredentialsSupplier, AUTHORIZE_URL, ACCESS_TOKEN_URL);
