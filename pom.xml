@@ -15,12 +15,13 @@
 		<module>spring-social-zauth</module>
 		<module>samples</module>
 		<module>zauth-services</module>
+		<module>zauth-spring-boot-starter</module>
 	</modules>
 
 	<scm>
-		<url>https://github.com/zalando/spring-social-zauth</url>
-		<connection>scm:git:https://github.com/zalando/spring-social-zauth.git</connection>
-		<developerConnection>scm:git:https://github.com/zalando/spring-social-zauth.git</developerConnection>
+		<url>https://github.com/zalando-incubator/spring-social-zauth</url>
+		<connection>scm:git:https://github.com/zalando-incubator/spring-social-zauth.git</connection>
+		<developerConnection>scm:git:https://github.com/zalando-incubator/spring-social-zauth.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 
