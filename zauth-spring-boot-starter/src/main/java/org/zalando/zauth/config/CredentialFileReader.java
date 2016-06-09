@@ -27,11 +27,11 @@ import org.springframework.social.oauth2.FileCredentialsSupplierSupport;
  */
 class CredentialFileReader extends FileCredentialsSupplierSupport implements ClientCredentialsSupplier {
 
-    CredentialFileReader(String credentialsDirectoryPath) {
+    public CredentialFileReader(String credentialsDirectoryPath) {
         super(credentialsDirectoryPath);
     }
 
-    ClientCredentials getClientCredentials() throws IOException {
+    public ClientCredentials getClientCredentials() throws IOException {
         return readAsJson("client.json", ClientCredentials.class);
     }
 

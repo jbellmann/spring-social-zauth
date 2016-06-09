@@ -63,7 +63,7 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
                                                                                // callback
 
             // important
-            params.add("realm", "employees");
+            params.add("realm", "/employees");
 
             throw new SocialAuthenticationRedirectException(getConnectionFactory().getOAuthOperations()
                     .buildAuthenticateUrl(params));
@@ -90,7 +90,8 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
     }
 
     protected MultiValueMap<String, String> getAdditionalParameters() {
-        return new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> additionals =  new LinkedMultiValueMap<String, String>();
+        return additionals;
     }
 
     protected void setScope(final HttpServletRequest request, final OAuth2Parameters params) {
