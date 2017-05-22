@@ -20,19 +20,27 @@ import java.io.IOException;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.oauth2.FileCredentialsSupplierSupport;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  * @author jbellmann
  *
  */
-class CredentialFileReader extends FileCredentialsSupplierSupport implements ClientCredentialsSupplier {
+public class JsonCredentialFileReader extends FileCredentialsSupplierSupport implements ClientCredentialsSupplier {
 
-    CredentialFileReader(String credentialsDirectoryPath) {
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public JsonCredentialFileReader(String credentialsDirectoryPath) {
         super(credentialsDirectoryPath);
     }
 
-    ClientCredentials getClientCredentials() throws IOException {
+    protected ClientCredentials getClientCredentials() throws IOException {
         return readAsJson("client.json", ClientCredentials.class);
+    }
+
+    protected <T> T readAsJson(String filename, Class<T> type) throws IOException {
+        return mapper.readValue(getFileInCredentialsDir(filename), type);
     }
 
     @Override

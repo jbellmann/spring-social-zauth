@@ -15,6 +15,8 @@
  */
 package org.zalando.example.zauth.config;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +30,7 @@ import org.springframework.social.zauth.config.AbstractZAuthSocialConfigurer;
 import org.zalando.example.zauth.services.AccountConnectionSignupService;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 @Configuration
 @EnableSocial
@@ -53,7 +55,22 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
 
     @Override
     protected ClientCredentialsSupplier getClientCredentialsSupplier() {
-        return new CredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
+        return new JsonCredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
+    }
+
+    @Override
+    protected Map<String, String> getCustomParameters() {
+        return zauthProperties.getCustomParams();
+    }
+
+    @Override
+    protected String getAuthorizationEndpoint() {
+        return zauthProperties.getAuthorizationEndpoint();
+    }
+
+    @Override
+    protected String getTokenEndpoint() {
+        return zauthProperties.getTokenEndpoint();
     }
 
 }

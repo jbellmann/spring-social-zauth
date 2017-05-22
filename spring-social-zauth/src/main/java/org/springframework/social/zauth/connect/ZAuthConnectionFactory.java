@@ -28,15 +28,16 @@ public class ZAuthConnectionFactory extends OAuth2ConnectionFactory<ZAuth> {
 
     public static final String PROVIDER_ID = "zauth";
 
-    public ZAuthConnectionFactory(ClientCredentialsSupplier clientCredentialsSupplier) {
-        super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier), new ZAuthAdapter());
+    public ZAuthConnectionFactory(ClientCredentialsSupplier clientCredentialsSupplier, String authorizationEndpoint,
+            String tokenEndpoint) {
+        super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint),
+                new ZAuthAdapter());
     }
 
     @Override
     public Connection<ZAuth> createConnection(final AccessGrant accessGrant) {
-
-        // TODO Auto-generated method stub
-        return super.createConnection(accessGrant);
+        Connection<ZAuth> con = super.createConnection(accessGrant);
+        return con;
     }
 
 }

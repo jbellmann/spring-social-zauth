@@ -31,24 +31,6 @@
             <h2>Index page</h2>
 
             <p th:text="'Logged in as : ' + ${currentLogin}">Logged In: </p>
-            
-            <table>
-                <tr>
-                    <td>Login:</td><td th:text="${user.login}">klaus</td>
-                </tr>
-                <tr>
-                    <td>Name:</td><td th:text="${user.name}">klaus</td>
-                </tr>
-                <tr>
-                    <td>Team:</td><td th:text="${user.team}">klaus</td>
-                </tr>
-                <tr>
-                    <td>Email:</td><td th:text="${user.email}">klaus</td>
-                </tr>
-                <tr>
-                    <td>Id:</td><td th:text="${user.id}">klaus</td>
-                </tr>
-            </table>
             <br/>
             <p><a href="#" th:href="@{/logout}">LOGOUT</a></p>
 

@@ -29,30 +29,40 @@ import org.springframework.util.Assert;
  */
 public class DefaultZAuthSocialConfigurer extends AbstractZAuthSocialConfigurer {
 
-	private ZAuthProperties zauthProperties;
+    private ZAuthProperties zauthProperties;
 
-	private UserDetailsManager userDetailsManager;
+    private UserDetailsManager userDetailsManager;
 
-	public DefaultZAuthSocialConfigurer(UserDetailsManager userDetailsManager, ZAuthProperties zauthProperties) {
-		Assert.notNull(userDetailsManager, "'userDetailsManager' should never be null");
-		Assert.notNull(zauthProperties, "'zauthProperties' should never be null");
-		this.userDetailsManager = userDetailsManager;
-		this.zauthProperties = zauthProperties;
-	}
+    public DefaultZAuthSocialConfigurer(UserDetailsManager userDetailsManager, ZAuthProperties zauthProperties) {
+        Assert.notNull(userDetailsManager, "'userDetailsManager' should never be null");
+        Assert.notNull(zauthProperties, "'zauthProperties' should never be null");
+        this.userDetailsManager = userDetailsManager;
+        this.zauthProperties = zauthProperties;
+    }
 
-	@Override
-	protected UsersConnectionRepository doGetUsersConnectionRepository(
-			final ConnectionFactoryLocator connectionFactoryLocator) {
+    @Override
+    protected UsersConnectionRepository doGetUsersConnectionRepository(
+            final ConnectionFactoryLocator connectionFactoryLocator) {
 
-		// for the example 'InMemory' is ok, but could be also JDBC or custom
-		InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator);
-		repository.setConnectionSignUp(new DefaultZAuthConnectionSignupService(userDetailsManager));
-		return repository;
-	}
+        // for the example 'InMemory' is ok, but could be also JDBC or custom
+        InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator);
+        repository.setConnectionSignUp(new DefaultZAuthConnectionSignupService(userDetailsManager));
+        return repository;
+    }
 
-	@Override
-	protected ClientCredentialsSupplier getClientCredentialsSupplier() {
-		return new CredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
-	}
+    @Override
+    protected ClientCredentialsSupplier getClientCredentialsSupplier() {
+        return new CredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
+    }
+
+    @Override
+    protected String getAuthorizationEndpoint() {
+        return zauthProperties.getAuthorizationEndpoint();
+    }
+
+    @Override
+    protected String getTokenEndpoint() {
+        return zauthProperties.getTokenEndpoint();
+    }
 
 }

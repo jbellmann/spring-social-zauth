@@ -22,7 +22,6 @@ import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zalando.zauth.users.User;
 
 /**
  * Simple controller that uses {@link ZAuth}-connection to provide some information<br/>
@@ -59,8 +58,8 @@ public class WebController {
         String currentLogin = zAuth.getCurrentLogin();
         model.addAttribute("currentLogin", currentLogin);
 
-        User user = zAuth.userOperations().getUserById(currentLogin);
-        model.addAttribute("user", user);
+//        User user = zAuth.userOperations().getUserById(currentLogin);
+//        model.addAttribute("user", user);
         return "index";
     }
 

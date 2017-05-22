@@ -19,7 +19,7 @@ import org.zalando.zauth.teams.TeamsOperations;
 import org.zalando.zauth.users.UsersOperations;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public interface ZAuth {
 
@@ -29,4 +29,5 @@ public interface ZAuth {
 
     TeamsOperations teamsOperations();
 
+    String getAccessToken();
 }

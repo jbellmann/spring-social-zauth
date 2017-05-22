@@ -18,6 +18,7 @@ package org.springframework.social.oauth2;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,7 @@ public class DynamicOAuth2Template implements OAuth2Operations {
         if (additionalParameters != null) {
             params.putAll(additionalParameters);
         }
+        params.put("business_partner_id", Arrays.asList("810d1d00-4312-43e5-bd31-d8373fdd24c7"));
         return postForAccessGrant(templateConfiguration.getAccessTokenUrl(), params);
     }
 

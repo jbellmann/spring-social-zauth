@@ -15,6 +15,9 @@
  */
 package org.springframework.social.zauth.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -61,7 +64,7 @@ public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer 
                     ccs.getClientSecret().substring(0, getClientSecretIdSubstringCount()));
 
             SocialAuthenticationServiceRegistry registry = (SocialAuthenticationServiceRegistry) connectionFactoryLocator;
-            registry.addAuthenticationService(new ZAuthAuthenticationService(ccs));
+            registry.addAuthenticationService(new ZAuthAuthenticationService(ccs, getCustomParameters(), getAuthorizationEndpoint(), getTokenEndpoint()));
         }
 
         return doGetUsersConnectionRepository(connectionFactoryLocator);
@@ -80,4 +83,11 @@ public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer 
         return 4;
     }
 
+    protected Map<String, String> getCustomParameters() {
+        return new HashMap<>(0);
+    }
+
+    protected abstract String getAuthorizationEndpoint();
+
+    protected abstract String getTokenEndpoint();
 }

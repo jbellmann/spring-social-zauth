@@ -15,9 +15,7 @@
  */
 package org.springframework.social.zauth.api.impl;
 
-import java.util.Map;
-import java.util.Optional;
-
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.social.zauth.api.ZAuth;
@@ -30,63 +28,81 @@ import org.zalando.zauth.users.UsersOperations;
  */
 public class ZAuthTemplate extends AbstractOAuth2ApiBinding implements ZAuth {
 
-	private static final String TOKEN_INFO_ENDPOINT = "https://auth.zalando.com/oauth2/tokeninfo?access_token=";
+//    private static final String TOKEN_INFO_ENDPOINT = "https://auth.zalando.com/oauth2/tokeninfo?access_token=";
 
-	private UsersOperations userOperations;
+    private UsersOperations userOperations;
 
-	private TeamsOperations teamsOperations;
+    private TeamsOperations teamsOperations;
 
-	private final String accessToken;
+    private final String accessToken;
 
-	private String userId;
+    private String userId;
 
-	private static final RestTemplate restTemplate = new RestTemplate();
+    private String tokenEndpoint;
 
-	public ZAuthTemplate() {
-		initialize();
-		accessToken = null;
-	}
+    private RestTemplate restTemplate = new RestTemplate();
 
-	public ZAuthTemplate(final String accessToken) {
-		super(accessToken);
-		this.accessToken = accessToken;
-		initialize();
-	}
+    public ZAuthTemplate() {
+        initialize();
+        accessToken = null;
+    }
 
-	private void initialize() {
-		super.setRequestFactory(ClientHttpRequestFactorySelector.bufferRequests(getRestTemplate().getRequestFactory()));
-		initSubApis();
-	}
+    public ZAuthTemplate(final String accessToken, String tokenEndpoint) {
+        super(accessToken);
+        this.accessToken = accessToken;
+        this.tokenEndpoint = tokenEndpoint;
+        initialize();
+    }
 
-	private void initSubApis() {
-		Optional<String> uid = new Uid(getTokenInfo(accessToken)).getUid();
-		if (!uid.isPresent()) {
-			throw new IllegalStateException("Unable to get 'uid' for 'accessToken' " + accessToken);
-		}
+    private void initialize() {
+        super.setRequestFactory(ClientHttpRequestFactorySelector.bufferRequests(getRestTemplate().getRequestFactory()));
+        ClientHttpRequestFactory requestFactory = ClientHttpRequestFactorySelector.getRequestFactory();
+        restTemplate = new RestTemplate(requestFactory);
+        initSubApis();
+    }
 
-		this.userId = uid.get();
+    private UidExtractor extractor = new UidExtractor();
+    private void initSubApis() {
+//        // TODO, do we still have this scope?????
+//        Optional<String> uid = new Uid(getTokenInfo(accessToken)).getUid();
+//        if (!uid.isPresent()) {
+//            throw new IllegalStateException("Unable to get 'uid' for 'accessToken' " + accessToken);
+//        }
+//
+//        this.userId = uid.get();
+        this.userId = extractor.extractUid(accessToken);
 
-		userOperations = new UsersTemplate(getRestTemplate(), isAuthorized());
+        userOperations = new UsersTemplate(getRestTemplate(), isAuthorized());
 
-		teamsOperations = new TeamsTemplate(getRestTemplate(), isAuthorized());
-	}
+        teamsOperations = new TeamsTemplate(getRestTemplate(), isAuthorized());
+    }
 
-	protected Map<String, ?> getTokenInfo(final String accessToken) {
-		return restTemplate.getForObject(TOKEN_INFO_ENDPOINT + accessToken, Map.class);
-	}
+//    @SuppressWarnings("unchecked")
+//    protected Map<String, ?> getTokenInfo(final String accessToken) {
+//        try {
+//            return restTemplate.getForObject(tokenEndpoint + accessToken, Map.class);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 
-	public UsersOperations userOperations() {
-		return userOperations;
-	}
+    public UsersOperations userOperations() {
+        return userOperations;
+    }
 
-	@Override
-	public TeamsOperations teamsOperations() {
-		return teamsOperations;
-	}
+    @Override
+    public TeamsOperations teamsOperations() {
+        return teamsOperations;
+    }
 
-	@Override
-	public String getCurrentLogin() {
-		return userId;
-	}
+    @Override
+    public String getCurrentLogin() {
+        return userId;
+    }
 
+    @Override
+    public String getAccessToken() {
+        return accessToken;
+    }
 }

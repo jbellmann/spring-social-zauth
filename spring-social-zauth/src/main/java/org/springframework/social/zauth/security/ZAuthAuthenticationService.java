@@ -15,91 +15,33 @@
  */
 package org.springframework.social.zauth.security;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
-import org.springframework.social.connect.Connection;
-import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.oauth2.OAuth2Parameters;
-import org.springframework.social.security.SocialAuthenticationRedirectException;
-import org.springframework.social.security.SocialAuthenticationToken;
 import org.springframework.social.security.provider.OAuth2AuthenticationService;
 import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.social.zauth.connect.ZAuthConnectionFactory;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestClientException;
+import org.springframework.util.Assert;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAuth> {
 
-    static final String DEFAULT_SCOPE = "uid";
+    private final Map<String, String> additionalParams;
 
-    private String defaultScope = DEFAULT_SCOPE;
-
-    public ZAuthAuthenticationService(ClientCredentialsSupplier clientCredentialsSupplier) {
-        super(new ZAuthConnectionFactory(clientCredentialsSupplier));
+    public ZAuthAuthenticationService(ClientCredentialsSupplier clientCredentialsSupplier,
+            Map<String, String> additionalParams, String authorizationEndpoint, String tokenEndpoint) {
+        super(new ZAuthConnectionFactory(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint));
+        Assert.notNull(additionalParams, "'additionalParams' should not be null");
+        this.additionalParams = additionalParams;
     }
 
     @Override
-    public void setDefaultScope(final String defaultScope) {
-        super.setDefaultScope(defaultScope);
-        this.defaultScope = defaultScope;
-    }
-
-    @Override
-    public SocialAuthenticationToken getAuthToken(final HttpServletRequest request, final HttpServletResponse response)
-        throws SocialAuthenticationRedirectException {
-        String code = request.getParameter("code");
-        if (!StringUtils.hasText(code)) {
-            OAuth2Parameters params = new OAuth2Parameters();
-            params.setRedirectUri(buildReturnToUrl(request));
-            setScope(request, params);
-            params.add("state", super.getConnectionFactory().generateState()); // TODO: Verify the state value after
-                                                                               // callback
-
-            // important
-            params.add("realm", "/employees");
-
-            throw new SocialAuthenticationRedirectException(getConnectionFactory().getOAuthOperations()
-                    .buildAuthenticateUrl(params));
-        } else if (StringUtils.hasText(code)) {
-            try {
-            	if(logger.isDebugEnabled()){            		
-            		logger.debug("CODE : " + code);
-            	}
-
-                String returnToUrl = buildReturnToUrl(request);
-                AccessGrant accessGrant = getConnectionFactory().getOAuthOperations().exchangeForAccess(code,
-                        returnToUrl, getAdditionalParameters());
-
-                // TODO avoid API call if possible (auth using token would be fine)
-                Connection<ZAuth> connection = getConnectionFactory().createConnection(accessGrant);
-                return new SocialAuthenticationToken(connection, null);
-            } catch (RestClientException e) {
-                logger.warn("failed to exchange for access", e);
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    protected MultiValueMap<String, String> getAdditionalParameters() {
-        MultiValueMap<String, String> additionals =  new LinkedMultiValueMap<String, String>();
-        return additionals;
-    }
-
-    protected void setScope(final HttpServletRequest request, final OAuth2Parameters params) {
-        String requestedScope = request.getParameter("scope");
-        if (StringUtils.hasLength(requestedScope)) {
-            params.setScope(requestedScope);
-        } else if (StringUtils.hasLength(defaultScope)) {
-            params.setScope(defaultScope);
+    protected void addCustomParameters(OAuth2Parameters params) {
+        for (Map.Entry<String, String> entry : additionalParams.entrySet()) {
+            params.add(entry.getKey(), entry.getValue());
         }
     }
 }

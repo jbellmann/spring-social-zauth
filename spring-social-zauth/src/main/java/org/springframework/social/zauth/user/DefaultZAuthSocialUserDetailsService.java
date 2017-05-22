@@ -18,7 +18,6 @@ package org.springframework.social.zauth.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +26,7 @@ import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class DefaultZAuthSocialUserDetailsService implements SocialUserDetailsService {
 
@@ -40,14 +39,12 @@ public class DefaultZAuthSocialUserDetailsService implements SocialUserDetailsSe
     }
 
     @Override
-    public SocialUserDetails loadUserByUserId(final String username) throws UsernameNotFoundException,
-        DataAccessException {
-
+    public SocialUserDetails loadUserByUserId(final String username)
+            throws UsernameNotFoundException, DataAccessException {
         try {
             log.debug("LOAD USER : {}", username);
-
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            return new SocialUser(userDetails.getUsername(), userDetails.getPassword(), AuthorityUtils.createAuthorityList("USER"));
+            return new SocialUser(username, "N/A", userDetails.getAuthorities());
         } catch (UsernameNotFoundException e) {
             log.warn(e.getMessage(), e);
         }

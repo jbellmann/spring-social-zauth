@@ -25,12 +25,16 @@ import org.springframework.social.zauth.api.impl.ZAuthTemplate;
  */
 public class ZAuthServiceProvider extends AbstractOAuth2ServiceProvider<ZAuth> {
 
-    public ZAuthServiceProvider(ClientCredentialsSupplier clientCredentialsSupplier) {
-        super(new ZAuthOAuth2Template(clientCredentialsSupplier));
+    private final String tokenEndpoint;
+
+    public ZAuthServiceProvider(ClientCredentialsSupplier clientCredentialsSupplier, String authorizationEndpoint,
+            String tokenEndpoint) {
+        super(new ZAuthOAuth2Template(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint));
+        this.tokenEndpoint = tokenEndpoint;
     }
 
     @Override
     public ZAuth getApi(final String accessToken) {
-        return new ZAuthTemplate(accessToken);
+        return new ZAuthTemplate(accessToken, tokenEndpoint);
     }
 }

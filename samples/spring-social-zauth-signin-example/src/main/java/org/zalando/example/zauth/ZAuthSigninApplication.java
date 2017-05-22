@@ -27,4 +27,5 @@ public class ZAuthSigninApplication {
     public static void main(final String[] args) {
         SpringApplication.run(ZAuthSigninApplication.class, args);
     }
+
 }

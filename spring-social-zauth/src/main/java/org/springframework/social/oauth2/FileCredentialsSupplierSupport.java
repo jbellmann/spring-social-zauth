@@ -16,16 +16,13 @@
 package org.springframework.social.oauth2;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class FileCredentialsSupplierSupport {
 
-    private final String credentialsDirectoryPath;
-    private final ObjectMapper mapper = new ObjectMapper();
+    protected final String credentialsDirectoryPath;
+
 
     public FileCredentialsSupplierSupport(String credentialsDirectoryPath) {
         Assert.hasText(credentialsDirectoryPath, "'credentialsDirectoryPath' should never be null or empty");
@@ -36,12 +33,8 @@ public class FileCredentialsSupplierSupport {
                 "'credentialsDirectoryPath' should be a directory, but it's not");
     }
 
-    protected File getFile(String filename) {
+    protected File getFileInCredentialsDir(String filename) {
         return new File(credentialsDirectoryPath, filename);
-    }
-
-    protected <T> T readAsJson(String filename, Class<T> type) throws IOException {
-        return mapper.readValue(getFile(filename), type);
     }
 
 }

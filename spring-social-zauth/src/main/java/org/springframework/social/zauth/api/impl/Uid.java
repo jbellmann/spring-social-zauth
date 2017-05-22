@@ -19,9 +19,11 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public final class Uid {
+
+    private final String uid_key = "https://identity.zalando.com/managed-id";
 
     private final Map<String, ?> response;
 
@@ -30,6 +32,6 @@ public final class Uid {
     }
 
     public Optional<String> getUid() {
-        return Optional.ofNullable((String) response.get("uid"));
+        return Optional.ofNullable((String) response.get(uid_key));
     }
 }

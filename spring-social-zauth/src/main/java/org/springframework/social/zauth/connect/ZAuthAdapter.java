@@ -21,10 +21,9 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UserProfileBuilder;
 import org.springframework.social.zauth.api.ZAuth;
-import org.zalando.zauth.users.User;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class ZAuthAdapter implements ApiAdapter<ZAuth> {
 
@@ -40,11 +39,12 @@ public class ZAuthAdapter implements ApiAdapter<ZAuth> {
 
     public void setConnectionValues(final ZAuth api, final ConnectionValues values) {
 
-        User user = api.userOperations().getUserById(api.getCurrentLogin());
+        // User user = api.userOperations().getUserById(api.getCurrentLogin());
 
-        values.setProviderUserId(user.getLogin());
-// values.setDisplayName(profile.getName());
-// values.setImageUrl("https://apis.live.net/v5.0/" + profile.getId() + "/picture");
+        values.setProviderUserId(api.getCurrentLogin());
+         values.setDisplayName(api.getCurrentLogin());
+        // values.setImageUrl("https://apis.live.net/v5.0/" + profile.getId() +
+        // "/picture");
 
     }
 
