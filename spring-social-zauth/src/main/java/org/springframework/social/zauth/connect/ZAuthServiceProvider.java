@@ -15,6 +15,8 @@
  */
 package org.springframework.social.zauth.connect;
 
+import java.util.Map;
+
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.zauth.api.ZAuth;
@@ -28,8 +30,8 @@ public class ZAuthServiceProvider extends AbstractOAuth2ServiceProvider<ZAuth> {
     private final String tokenEndpoint;
 
     public ZAuthServiceProvider(ClientCredentialsSupplier clientCredentialsSupplier, String authorizationEndpoint,
-            String tokenEndpoint) {
-        super(new ZAuthOAuth2Template(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint));
+            String tokenEndpoint, Map<String,String> additionalParams) {
+        super(new ZAuthOAuth2Template(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint, additionalParams));
         this.tokenEndpoint = tokenEndpoint;
     }
 

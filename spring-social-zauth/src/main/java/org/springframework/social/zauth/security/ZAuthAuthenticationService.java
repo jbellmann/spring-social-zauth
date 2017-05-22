@@ -33,7 +33,7 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
 
     public ZAuthAuthenticationService(ClientCredentialsSupplier clientCredentialsSupplier,
             Map<String, String> additionalParams, String authorizationEndpoint, String tokenEndpoint) {
-        super(new ZAuthConnectionFactory(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint));
+        super(new ZAuthConnectionFactory(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint, additionalParams));
         Assert.notNull(additionalParams, "'additionalParams' should not be null");
         this.additionalParams = additionalParams;
     }

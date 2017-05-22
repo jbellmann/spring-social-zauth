@@ -15,6 +15,8 @@
  */
 package org.springframework.social.zauth.connect;
 
+import java.util.Map;
+
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.oauth2.DynamicOAuth2Template;
 import org.springframework.social.oauth2.OAuth2TemplateConfiguration;
@@ -25,7 +27,7 @@ import org.springframework.social.oauth2.OAuth2TemplateConfiguration;
 public class ZAuthOAuth2Template extends DynamicOAuth2Template {
 
     public ZAuthOAuth2Template(ClientCredentialsSupplier clientCredentialsSupplier, String authorizeUrl,
-            String accessTokenUrl) {
-        super(new OAuth2TemplateConfiguration(clientCredentialsSupplier, authorizeUrl, accessTokenUrl));
+            String accessTokenUrl, Map<String,String> additionalParams) {
+        super(new OAuth2TemplateConfiguration(clientCredentialsSupplier, authorizeUrl, accessTokenUrl, additionalParams));
     }
 }

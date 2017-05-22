@@ -17,8 +17,13 @@ package org.springframework.social.oauth2;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 /**
  * Brings in all information needed by normal {@link OAuth2Template} but with
@@ -37,18 +42,21 @@ public class OAuth2TemplateConfiguration {
 
     private final ClientCredentialsSupplier clientCredentialsSupplier;
 
-    public OAuth2TemplateConfiguration(String clientId, String clientSecret, String authorizeUrl,
-            String accessTokenUrl) {
-        this(new StaticClientCredentialsSupplier(clientId, clientSecret), authorizeUrl, null, accessTokenUrl);
+    private final MultiValueMap<String, String> additionalParams;
+
+    public OAuth2TemplateConfiguration(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl,
+            Map<String, String> additionalParams) {
+        this(new StaticClientCredentialsSupplier(clientId, clientSecret), authorizeUrl, null, accessTokenUrl,
+                additionalParams);
     }
 
     public OAuth2TemplateConfiguration(ClientCredentialsSupplier clientCredentialsSupplier, String authorizeUrl,
-            String accessTokenUrl) {
-        this(clientCredentialsSupplier, authorizeUrl, null, accessTokenUrl);
+            String accessTokenUrl, Map<String, String> additionalParams) {
+        this(clientCredentialsSupplier, authorizeUrl, null, accessTokenUrl, additionalParams);
     }
 
     public OAuth2TemplateConfiguration(ClientCredentialsSupplier clientCredentialsSupplier, String authorizeUrl,
-            String authenticateUrl, String accessTokenUrl) {
+            String authenticateUrl, String accessTokenUrl, Map<String, String> additionalParams) {
         Assert.notNull(clientCredentialsSupplier, "'clientCredentialsSupplier' should never be null");
         Assert.notNull(authorizeUrl, "The authorizeUrl property cannot be null");
         Assert.notNull(accessTokenUrl, "The accessTokenUrl property cannot be null");
@@ -60,6 +68,10 @@ public class OAuth2TemplateConfiguration {
         this.authenticateUrl = authenticateUrl;
 
         this.accessTokenUrl = accessTokenUrl;
+        this.additionalParams = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, String> entry : additionalParams.entrySet()) {
+            this.additionalParams.put(entry.getKey(), Arrays.asList(entry.getValue()));
+        }
     }
 
     public ClientCredentialsSupplier getClientCredentialsSupplier() {
@@ -93,5 +105,9 @@ public class OAuth2TemplateConfiguration {
             // should not happen, UTF-8 is always supported
             throw new IllegalStateException(ex);
         }
+    }
+
+    public MultiValueMap<String, String> getAdditionalParameters() {
+        return this.additionalParams;
     }
 }

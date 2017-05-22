@@ -15,6 +15,8 @@
  */
 package org.springframework.social.zauth.connect;
 
+import java.util.Map;
+
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
@@ -29,8 +31,8 @@ public class ZAuthConnectionFactory extends OAuth2ConnectionFactory<ZAuth> {
     public static final String PROVIDER_ID = "zauth";
 
     public ZAuthConnectionFactory(ClientCredentialsSupplier clientCredentialsSupplier, String authorizationEndpoint,
-            String tokenEndpoint) {
-        super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint),
+            String tokenEndpoint, Map<String,String> additionalParams) {
+        super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint, additionalParams),
                 new ZAuthAdapter());
     }
 
