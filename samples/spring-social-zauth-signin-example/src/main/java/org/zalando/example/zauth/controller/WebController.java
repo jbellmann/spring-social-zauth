@@ -24,7 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Simple controller that uses {@link ZAuth}-connection to provide some information<br/>
+ * Simple controller that uses {@link ZAuth}-connection to provide some
+ * information<br/>
  * from ZAuth-Services (Teams, Users).
  * 
  * @author jbellmann
@@ -50,16 +51,13 @@ public class WebController {
         return "login";
     }
 
-    @RequestMapping(value = {"/", "/index"})
+    @RequestMapping(value = { "/", "/index" })
     public String index(final Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         auth.getPrincipal();
 
         String currentLogin = zAuth.getCurrentLogin();
         model.addAttribute("currentLogin", currentLogin);
-
-//        User user = zAuth.userOperations().getUserById(currentLogin);
-//        model.addAttribute("user", user);
         return "index";
     }
 

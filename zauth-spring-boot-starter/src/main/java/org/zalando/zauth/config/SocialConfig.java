@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.example.zauth.config;
+package org.zalando.zauth.config;
 
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.social.config.annotation.EnableSocial;
+import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
+import org.springframework.social.oauth2.JsonCredentialFileReader;
+import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.social.zauth.config.AbstractZAuthSocialConfigurer;
-import org.zalando.example.zauth.services.AccountConnectionSignupService;
 
 /**
  * @author jbellmann
@@ -41,16 +46,13 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
     private ZAuthProperties zauthProperties;
 
     @Autowired
-    private UserDetailsManager userDetailsManager;
+    private UsersConnectionRepositoryConfigAdapter usersConnectionRepositoryConfigAdapter;
 
     @Override
     protected UsersConnectionRepository doGetUsersConnectionRepository(
             final ConnectionFactoryLocator connectionFactoryLocator) {
 
-        // for the example 'InMemory' is ok, but could be also JDBC or custom
-        InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator);
-        repository.setConnectionSignUp(new AccountConnectionSignupService(userDetailsManager));
-        return repository;
+        return usersConnectionRepositoryConfigAdapter.configure(connectionFactoryLocator);
     }
 
     @Override
@@ -73,4 +75,18 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
         return zauthProperties.getTokenEndpoint();
     }
 
+    /**
+     * ZAuth api, can be injected into controller if needed.
+     * 
+     * @param repository
+     * @return ZAuth
+     * @see WebController
+     */
+    @ConditionalOnMissingBean
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public ZAuth zAuth(final ConnectionRepository repository) {
+        Connection<ZAuth> connection = repository.findPrimaryConnection(ZAuth.class);
+        return connection != null ? connection.getApi() : null;
+    }
 }

@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.example.zauth.config;
+package org.springframework.social.oauth2;
 
 import java.io.IOException;
-
-import org.springframework.social.oauth2.ClientCredentialsSupplier;
-import org.springframework.social.oauth2.FileCredentialsSupplierSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

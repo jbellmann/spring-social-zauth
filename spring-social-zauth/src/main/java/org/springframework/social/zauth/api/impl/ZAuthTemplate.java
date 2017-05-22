@@ -15,32 +15,22 @@
  */
 package org.springframework.social.zauth.api.impl;
 
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.social.zauth.api.ZAuth;
-import org.springframework.web.client.RestTemplate;
-import org.zalando.zauth.teams.TeamsOperations;
-import org.zalando.zauth.users.UsersOperations;
 
 /**
  * @author jbellmann
  */
 public class ZAuthTemplate extends AbstractOAuth2ApiBinding implements ZAuth {
 
-//    private static final String TOKEN_INFO_ENDPOINT = "https://auth.zalando.com/oauth2/tokeninfo?access_token=";
-
-    private UsersOperations userOperations;
-
-    private TeamsOperations teamsOperations;
-
     private final String accessToken;
 
     private String userId;
 
-    private String tokenEndpoint;
+    // private String tokenEndpoint;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    // private RestTemplate restTemplate;
 
     public ZAuthTemplate() {
         initialize();
@@ -50,50 +40,22 @@ public class ZAuthTemplate extends AbstractOAuth2ApiBinding implements ZAuth {
     public ZAuthTemplate(final String accessToken, String tokenEndpoint) {
         super(accessToken);
         this.accessToken = accessToken;
-        this.tokenEndpoint = tokenEndpoint;
+        // this.tokenEndpoint = tokenEndpoint;
         initialize();
     }
 
     private void initialize() {
         super.setRequestFactory(ClientHttpRequestFactorySelector.bufferRequests(getRestTemplate().getRequestFactory()));
-        ClientHttpRequestFactory requestFactory = ClientHttpRequestFactorySelector.getRequestFactory();
-        restTemplate = new RestTemplate(requestFactory);
+        // ClientHttpRequestFactory requestFactory =
+        // ClientHttpRequestFactorySelector.getRequestFactory();
+        // restTemplate = new RestTemplate(requestFactory);
         initSubApis();
     }
 
     private UidExtractor extractor = new UidExtractor();
+
     private void initSubApis() {
-//        // TODO, do we still have this scope?????
-//        Optional<String> uid = new Uid(getTokenInfo(accessToken)).getUid();
-//        if (!uid.isPresent()) {
-//            throw new IllegalStateException("Unable to get 'uid' for 'accessToken' " + accessToken);
-//        }
-//
-//        this.userId = uid.get();
         this.userId = extractor.extractUid(accessToken);
-
-        userOperations = new UsersTemplate(getRestTemplate(), isAuthorized());
-
-        teamsOperations = new TeamsTemplate(getRestTemplate(), isAuthorized());
-    }
-
-//    @SuppressWarnings("unchecked")
-//    protected Map<String, ?> getTokenInfo(final String accessToken) {
-//        try {
-//            return restTemplate.getForObject(tokenEndpoint + accessToken, Map.class);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            throw e;
-//        }
-//    }
-
-    public UsersOperations userOperations() {
-        return userOperations;
-    }
-
-    @Override
-    public TeamsOperations teamsOperations() {
-        return teamsOperations;
     }
 
     @Override

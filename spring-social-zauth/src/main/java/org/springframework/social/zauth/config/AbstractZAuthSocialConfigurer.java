@@ -47,7 +47,6 @@ public abstract class AbstractZAuthSocialConfigurer implements SocialConfigurer 
 
     @Override
     public UserIdSource getUserIdSource() {
-
         return new AuthenticationNameUserIdSource();
     }
 

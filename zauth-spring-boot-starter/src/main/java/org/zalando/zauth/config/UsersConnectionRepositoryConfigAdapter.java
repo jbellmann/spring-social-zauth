@@ -13,25 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.example.zauth.config;
+package org.zalando.zauth.config;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-class ClientCredentials {
+/**
+ * @author jbellmann
+ *
+ */
+public interface UsersConnectionRepositoryConfigAdapter {
 
-    @JsonProperty("client_id")
-    private String clientId;
+    UsersConnectionRepository configure(ConnectionFactoryLocator connectionFactoryLocator);
 
-    @JsonProperty("client_secret")
-    private String clientSecret;
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
 }

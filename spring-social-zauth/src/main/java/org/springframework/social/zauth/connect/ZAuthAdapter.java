@@ -38,18 +38,11 @@ public class ZAuthAdapter implements ApiAdapter<ZAuth> {
     }
 
     public void setConnectionValues(final ZAuth api, final ConnectionValues values) {
-
-        // User user = api.userOperations().getUserById(api.getCurrentLogin());
-
         values.setProviderUserId(api.getCurrentLogin());
-         values.setDisplayName(api.getCurrentLogin());
-        // values.setImageUrl("https://apis.live.net/v5.0/" + profile.getId() +
-        // "/picture");
-
+        values.setDisplayName(api.getCurrentLogin());
     }
 
     public UserProfile fetchUserProfile(final ZAuth api) {
-
         return new UserProfileBuilder().setUsername(api.getCurrentLogin()).build();
     }
 

@@ -15,19 +15,16 @@
  */
 package org.springframework.social.zauth.api;
 
-import org.zalando.zauth.teams.TeamsOperations;
-import org.zalando.zauth.users.UsersOperations;
-
 /**
  * @author jbellmann
  */
 public interface ZAuth {
 
     String getCurrentLogin();
-
-    UsersOperations userOperations();
-
-    TeamsOperations teamsOperations();
+//
+//    UsersOperations userOperations();
+//
+//    TeamsOperations teamsOperations();
 
     String getAccessToken();
 }

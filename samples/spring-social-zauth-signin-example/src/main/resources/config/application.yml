@@ -20,8 +20,8 @@ logging:
     org.springframework: INFO
     org.springframework.social: DEBUG
     org.zalando.example: DEBUG
-    org.apache.http: DEBUG
-    org.apache.http.wire: DEBUG
+    org.apache.http: INFO
+    org.apache.http.wire: INFO
 
 zauth:
     clientId: yourClientId
