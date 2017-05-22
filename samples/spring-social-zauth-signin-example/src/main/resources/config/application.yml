@@ -24,11 +24,9 @@ logging:
     org.apache.http.wire: INFO
 
 zauth:
-    clientId: yourClientId
-    clientSecret: 'yourClientSecret' # we use 'ticks' here, because 'clientSecret' sometimes contains 'yaml-sensitive-tokens'
     credentialsDirectoryPath: ${user.dir}/credentials
     authorization-endpoint: https://sandbox.identity.zalando.com/oauth2/authorize
     token-endpoint: https://sandbox.identity.zalando.com/oauth2/token
     custom-params:
-      business_partner_id: 810d1d00-4312-43e5-bd31-d8373fdd24c7
+      business_partner_id: 821d1d00-4312-43e5-bd31-d8373fdd24d8
 
