@@ -13,9 +13,9 @@
 
 	<modules>
 		<module>spring-social-zauth</module>
-		<module>samples</module>
-		<module>zauth-services</module>
 		<module>zauth-spring-boot-starter</module>
+		<!-- <module>samples</module> -->
+		<!-- <module>zauth-services</module> -->
 	</modules>
 
 	<scm>
