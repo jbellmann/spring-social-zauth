@@ -27,12 +27,15 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
+import org.springframework.social.oauth2.ClientCredentialsSupplier;
+import org.springframework.social.oauth2.JsonCredentialFileReader;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.social.zauth.signup.DefaultZAuthConnectionSignupService;
 import org.springframework.social.zauth.user.DefaultZAuthSocialUserDetailsService;
 
 @Configuration
 public class ZAuthAutoConfiguration {
+   
 
     @ConditionalOnMissingBean
     @Bean
@@ -78,5 +81,11 @@ public class ZAuthAutoConfiguration {
         public UserDetailsManager userDetailsManager() {
             return new InMemoryUserDetailsManager(new ArrayList<UserDetails>());
         }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean({ClientCredentialsSupplier.class})
+    public ClientCredentialsSupplier jsonClientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        return new JsonCredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
     }
 }

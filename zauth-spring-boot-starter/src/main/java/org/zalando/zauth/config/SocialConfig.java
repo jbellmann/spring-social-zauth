@@ -30,7 +30,6 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
-import org.springframework.social.oauth2.JsonCredentialFileReader;
 import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.social.zauth.config.AbstractZAuthSocialConfigurer;
 
@@ -48,6 +47,9 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
     @Autowired
     private UsersConnectionRepositoryConfigAdapter usersConnectionRepositoryConfigAdapter;
 
+    @Autowired
+    private ClientCredentialsSupplier clientCredentialsSupplier;
+
     @Override
     protected UsersConnectionRepository doGetUsersConnectionRepository(
             final ConnectionFactoryLocator connectionFactoryLocator) {
@@ -57,7 +59,7 @@ public class SocialConfig extends AbstractZAuthSocialConfigurer {
 
     @Override
     protected ClientCredentialsSupplier getClientCredentialsSupplier() {
-        return new JsonCredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
+        return clientCredentialsSupplier;
     }
 
     @Override

@@ -42,6 +42,8 @@ public class ZAuthProperties {
 
     private String tokenEndpoint;
 
+    private String credentialsIdentifier;
+
     public String getClientId() {
         return clientId;
     }
@@ -89,4 +91,13 @@ public class ZAuthProperties {
     public void setTokenEndpoint(String tokenEndpoint) {
         this.tokenEndpoint = tokenEndpoint;
     }
+
+    public String getCredentialsIdentifier() {
+        return credentialsIdentifier;
+    }
+
+    public void setCredentialsIdentifier(String credentialsIdentifier) {
+        this.credentialsIdentifier = credentialsIdentifier;
+    }
+
 }
