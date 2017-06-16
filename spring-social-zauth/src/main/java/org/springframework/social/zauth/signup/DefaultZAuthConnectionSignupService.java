@@ -15,17 +15,20 @@
  */
 package org.springframework.social.zauth.signup;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
+import org.springframework.util.Assert;
 
 /**
- * @author  jbellmann
+ * @author jbellmann
  */
 public class DefaultZAuthConnectionSignupService implements ConnectionSignUp {
 
@@ -42,13 +45,30 @@ public class DefaultZAuthConnectionSignupService implements ConnectionSignUp {
 
         // or use more generic
         org.springframework.social.connect.UserProfile profile = connection.fetchUserProfile();
-
         final String username = profile.getUsername();
+        Assert.hasText(username, "'username' should never be null or empty.");
 
-        User user = new User(username, "N/A", Collections.emptyList());
-        userDetailsManager.createUser(user);
-        LOG.debug("Created user with id: " + username);
+        if (canAccess(username)) {
 
-        return username;
+            User user = new User(username, createPassword(username), getAuthorities(username));
+            userDetailsManager.createUser(user);
+            LOG.debug("Created user with id: " + username);
+
+            return username;
+        } else {
+            return null;
+        }
+    }
+
+    protected boolean canAccess(String username) {
+        return true;
+    }
+
+    protected String createPassword(String username) {
+        return "N/A";
+    }
+
+    protected Collection<? extends GrantedAuthority> getAuthorities(String username) {
+        return Collections.emptyList();
     }
 }
