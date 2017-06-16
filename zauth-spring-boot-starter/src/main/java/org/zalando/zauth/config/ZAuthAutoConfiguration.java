@@ -35,10 +35,9 @@ import org.springframework.social.zauth.user.DefaultZAuthSocialUserDetailsServic
 
 @Configuration
 public class ZAuthAutoConfiguration {
-   
 
-    @ConditionalOnMissingBean
     @Bean
+    @ConditionalOnMissingBean
     public UsersConnectionRepositoryConfigAdapter usersConnectionRepositoryConfigAdapter(
             ConnectionSignUp connectionSignUp) {
 
@@ -59,6 +58,7 @@ public class ZAuthAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ConnectionSignUp connectionSignUp(UserDetailsManager userDetailsManager) {
         return new DefaultZAuthConnectionSignupService(userDetailsManager);
     }
@@ -84,7 +84,7 @@ public class ZAuthAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean({ClientCredentialsSupplier.class})
+    @ConditionalOnMissingBean({ ClientCredentialsSupplier.class })
     public ClientCredentialsSupplier jsonClientCredentialsSupplier(ZAuthProperties zauthProperties) {
         return new JsonCredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
     }
