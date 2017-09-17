@@ -19,9 +19,9 @@
 	</modules>
 
 	<scm>
-		<url>https://github.com/zalando-incubator/spring-social-zauth</url>
-		<connection>scm:git:https://github.com/zalando-incubator/spring-social-zauth.git</connection>
-		<developerConnection>scm:git:https://github.com/zalando-incubator/spring-social-zauth.git</developerConnection>
+		<url>https://github.com/jbellmann/spring-social-zauth</url>
+		<connection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</connection>
+		<developerConnection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 

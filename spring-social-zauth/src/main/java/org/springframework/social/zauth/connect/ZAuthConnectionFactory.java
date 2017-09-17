@@ -29,17 +29,23 @@ import org.springframework.social.zauth.api.ZAuth;
 public class ZAuthConnectionFactory extends OAuth2ConnectionFactory<ZAuth> {
 
     public static final String PROVIDER_ID = "zauth";
+    public final Map<String,String> additionalParams;
 
     public ZAuthConnectionFactory(ClientCredentialsSupplier clientCredentialsSupplier, String authorizationEndpoint,
             String tokenEndpoint, Map<String,String> additionalParams) {
         super(PROVIDER_ID, new ZAuthServiceProvider(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint, additionalParams),
                 new ZAuthAdapter());
+        this.additionalParams = additionalParams;
     }
 
     @Override
     public Connection<ZAuth> createConnection(final AccessGrant accessGrant) {
-        Connection<ZAuth> con = super.createConnection(accessGrant);
-        return con;
+        return new ZAuthOAuth2Connection<ZAuth>(getProviderId(), extractProviderUserId(accessGrant), accessGrant.getAccessToken(),
+                accessGrant.getRefreshToken(), accessGrant.getExpireTime(), getZAuthServiceProvider(), getApiAdapter(), additionalParams);
+    }
+    
+    private ZAuthServiceProvider getZAuthServiceProvider() {
+        return (ZAuthServiceProvider) super.getServiceProvider();
     }
 
 }
