@@ -16,11 +16,11 @@
 package org.springframework.social.zauth.signup;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.social.connect.Connection;
@@ -31,6 +31,10 @@ import org.springframework.util.Assert;
  * @author jbellmann
  */
 public class DefaultZAuthConnectionSignupService implements ConnectionSignUp {
+
+    private static final String ROLE_USER = "ROLE_USER";
+
+    private static final String N_A = "N/A";
 
     private final Logger LOG = LoggerFactory.getLogger(DefaultZAuthConnectionSignupService.class);
 
@@ -50,25 +54,57 @@ public class DefaultZAuthConnectionSignupService implements ConnectionSignUp {
 
         if (canAccess(username)) {
 
-            User user = new User(username, createPassword(username), getAuthorities(username));
-            userDetailsManager.createUser(user);
-            LOG.debug("Created user with id: " + username);
-
-            return username;
+            return createOrUpdateUser(username);
         } else {
             return null;
         }
     }
 
+    /**
+     * Successfull operation should always return the 'username' or 'null' in case of
+     * any error.
+     * 
+     * @param username
+     * @return
+     */
+    protected String createOrUpdateUser(String username) {
+        User user = new User(username, createPassword(username), getAuthorities(username));
+        userDetailsManager.createUser(user);
+        LOG.debug("Created user with id: " + username);
+        return username;
+    }
+
+    /**
+     * defaults to true
+     * 
+     * @param username
+     * @return
+     */
     protected boolean canAccess(String username) {
         return true;
     }
 
+    /**
+     * defaults to {@value #N_A}
+     * 
+     * @param username
+     * @return
+     */
     protected String createPassword(String username) {
-        return "N/A";
+        return N_A;
     }
 
+    /**
+     * defaults to have only one role {@value #ROLE_USER}
+     * 
+     * @param username
+     * @return
+     */
     protected Collection<? extends GrantedAuthority> getAuthorities(String username) {
-        return Collections.emptyList();
+        return AuthorityUtils.createAuthorityList(ROLE_USER);
+    }
+
+    protected UserDetailsManager getUserDetailsManager() {
+        return this.userDetailsManager;
     }
 }
