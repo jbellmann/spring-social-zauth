@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.GenericTypeResolver;
@@ -27,14 +28,13 @@ import org.springframework.social.ServiceProvider;
 import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
-import org.springframework.social.connect.support.AbstractConnection;
 import org.springframework.social.connect.support.OAuth2Connection;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2ServiceProvider;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public class ZAuthOAuth2Connection<A> extends AbstractConnection<A> {
+public class ZAuthOAuth2Connection<A> extends ZAuthAbstractConnection<A> {
 
     private static final long serialVersionUID = 4057584084077577480L;
 
@@ -83,11 +83,23 @@ public class ZAuthOAuth2Connection<A> extends AbstractConnection<A> {
      * @param apiAdapter the ApiAdapter for the ServiceProvider
      */
     public ZAuthOAuth2Connection(ConnectionData data, OAuth2ServiceProvider<A> serviceProvider, ApiAdapter<A> apiAdapter) {
+        this(data, serviceProvider, apiAdapter, new HashMap<String,String>());
+    }
+
+    /**
+     * Creates a new {@link OAuth2Connection} from the data provided.
+     * Designed to be called when re-constituting an existing {@link Connection} from {@link ConnectionData}.
+     * @param data the data holding the state of this connection
+     * @param serviceProvider the OAuth2-based ServiceProvider
+     * @param apiAdapter the ApiAdapter for the ServiceProvider
+     */
+    public ZAuthOAuth2Connection(ConnectionData data, OAuth2ServiceProvider<A> serviceProvider, ApiAdapter<A> apiAdapter, Map<String,String> additionalParams) {
         super(data, apiAdapter);
         this.serviceProvider = serviceProvider;
         initAccessTokens(data.getAccessToken(), data.getRefreshToken(), data.getExpireTime());
         initApi();
         initApiProxy();
+        this.additionalParams = additionalParams;
     }
 
     // implementing Connection
@@ -105,6 +117,13 @@ public class ZAuthOAuth2Connection<A> extends AbstractConnection<A> {
             AccessGrant accessGrant = serviceProvider.getOAuthOperations().refreshAccess(refreshToken, params);
             initAccessTokens(accessGrant.getAccessToken(), accessGrant.getRefreshToken(), accessGrant.getExpireTime());
             initApi();
+        }
+    }
+
+    public void refresh(AccessGrant accessGrant) {
+        synchronized (getMonitor()) {
+            initAccessTokens(accessGrant.getAccessToken(), accessGrant.getRefreshToken(), accessGrant.getExpireTime());
+//            initApi();
         }
     }
 

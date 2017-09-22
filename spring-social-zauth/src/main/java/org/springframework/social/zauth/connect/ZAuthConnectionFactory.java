@@ -18,6 +18,7 @@ package org.springframework.social.zauth.connect;
 import java.util.Map;
 
 import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
@@ -37,6 +38,16 @@ public class ZAuthConnectionFactory extends OAuth2ConnectionFactory<ZAuth> {
                 new ZAuthAdapter());
         this.additionalParams = additionalParams;
     }
+
+    
+    
+    @Override
+    public Connection<ZAuth> createConnection(ConnectionData data) {
+        return new ZAuthOAuth2Connection<>(data, getZAuthServiceProvider(), getApiAdapter(), additionalParams);
+//        return super.createConnection(data);
+    }
+
+
 
     @Override
     public Connection<ZAuth> createConnection(final AccessGrant accessGrant) {
