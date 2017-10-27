@@ -16,22 +16,19 @@
 package org.zalando.zauth.config;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
-import org.springframework.social.oauth2.PlatformCredentialsetFileReader;
-import org.zalando.zauth.config.ZAuthProperties;
+import org.springframework.social.oauth2.StaticClientCredentialsSupplier;
 
 @Configuration
-@AutoConfigureBefore({ZAuthAutoConfiguration.class})
-public class ClientCredentialsSupplierConfig {
+@ConditionalOnStaticClientId
+@AutoConfigureBefore({ PlatformClientCredentialsSupplierConfig.class })
+public class StaticClientCredentialsSupplierConfig {
 
     @Bean
-    @ConditionalOnProperty(prefix = "k8s", name = "enabled", havingValue = "true")
-    public ClientCredentialsSupplier clientCredentialsSupplier(ZAuthProperties zauthProperties) {
-        return new PlatformCredentialsetFileReader(zauthProperties.getCredentialsDirectoryPath(),
-                zauthProperties.getCredentialsIdentifier());
+    public ClientCredentialsSupplier staticClientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        return new StaticClientCredentialsSupplier(zauthProperties.getClientId(), zauthProperties.getClientSecret());
     }
 
 }
