@@ -3,4 +3,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.zalando.zauth.config.ZAuthAutoConfiguration,\
 org.zalando.zauth.config.SocialConfig,\
-org.zalando.zauth.config.ClientCredentialsSupplierConfig
+org.zalando.zauth.config.PlatformClientCredentialsSupplierConfig,\
+org.zalando.zauth.config.StaticClientCredentialsSupplierConfig

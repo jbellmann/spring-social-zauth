@@ -15,23 +15,24 @@
  */
 package org.zalando.zauth.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
-import org.springframework.social.oauth2.PlatformCredentialsetFileReader;
-import org.zalando.zauth.config.ZAuthProperties;
+import org.springframework.social.oauth2.StaticClientCredentialsSupplier;
 
 @Configuration
-@AutoConfigureBefore({ZAuthAutoConfiguration.class})
-public class ClientCredentialsSupplierConfig {
+@ConditionalOnStaticClientId
+@AutoConfigureBefore({ PlatformClientCredentialsSupplierConfig.class, ZAuthAutoConfiguration.class })
+public class StaticClientCredentialsSupplierConfig {
+    private final Logger log = LoggerFactory.getLogger(StaticClientCredentialsSupplierConfig.class);
 
     @Bean
-    @ConditionalOnProperty(prefix = "k8s", name = "enabled", havingValue = "true")
-    public ClientCredentialsSupplier clientCredentialsSupplier(ZAuthProperties zauthProperties) {
-        return new PlatformCredentialsetFileReader(zauthProperties.getCredentialsDirectoryPath(),
-                zauthProperties.getCredentialsIdentifier());
+    public ClientCredentialsSupplier staticClientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        log.info("CREATE STATIC_CLIENT_CREDENTIALS ...");
+        return new StaticClientCredentialsSupplier(zauthProperties.getClientId(), zauthProperties.getClientSecret());
     }
 
 }
