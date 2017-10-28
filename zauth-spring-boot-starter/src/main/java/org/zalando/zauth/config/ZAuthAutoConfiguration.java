@@ -17,6 +17,8 @@ package org.zalando.zauth.config;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +37,7 @@ import org.springframework.social.zauth.user.DefaultZAuthSocialUserDetailsServic
 
 @Configuration
 public class ZAuthAutoConfiguration {
+    private final Logger log = LoggerFactory.getLogger(ZAuthAutoConfiguration.class);
 
     @Bean
     @ConditionalOnMissingBean
@@ -86,6 +89,7 @@ public class ZAuthAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean({ ClientCredentialsSupplier.class })
     public ClientCredentialsSupplier jsonClientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        log.info("CREATE JSON_CLIENT_CREDENTIALS ...");
         return new JsonCredentialFileReader(zauthProperties.getCredentialsDirectoryPath());
     }
 }

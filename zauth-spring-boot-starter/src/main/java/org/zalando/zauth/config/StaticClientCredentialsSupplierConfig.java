@@ -15,6 +15,8 @@
  */
 package org.zalando.zauth.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +25,13 @@ import org.springframework.social.oauth2.StaticClientCredentialsSupplier;
 
 @Configuration
 @ConditionalOnStaticClientId
-@AutoConfigureBefore({ PlatformClientCredentialsSupplierConfig.class })
+@AutoConfigureBefore({ PlatformClientCredentialsSupplierConfig.class, ZAuthAutoConfiguration.class })
 public class StaticClientCredentialsSupplierConfig {
+    private final Logger log = LoggerFactory.getLogger(StaticClientCredentialsSupplierConfig.class);
 
     @Bean
     public ClientCredentialsSupplier staticClientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        log.info("CREATE STATIC_CLIENT_CREDENTIALS ...");
         return new StaticClientCredentialsSupplier(zauthProperties.getClientId(), zauthProperties.getClientSecret());
     }
 

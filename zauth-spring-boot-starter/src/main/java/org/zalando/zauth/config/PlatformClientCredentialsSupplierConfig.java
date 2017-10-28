@@ -15,6 +15,8 @@
  */
 package org.zalando.zauth.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,11 +28,13 @@ import org.springframework.social.oauth2.PlatformCredentialsetFileReader;
 @Configuration
 @AutoConfigureBefore({ZAuthAutoConfiguration.class})
 public class PlatformClientCredentialsSupplierConfig {
+    private final Logger log = LoggerFactory.getLogger(PlatformClientCredentialsSupplierConfig.class);
 
     @Bean
     @ConditionalOnMissingBean({ClientCredentialsSupplier.class})
     @ConditionalOnProperty(prefix = "k8s", name = "enabled", havingValue = "true")
     public ClientCredentialsSupplier clientCredentialsSupplier(ZAuthProperties zauthProperties) {
+        log.info("CREATE PLATFORM_CLIENT_CREDENTIALS ...");
         return new PlatformCredentialsetFileReader(zauthProperties.getCredentialsDirectoryPath(),
                 zauthProperties.getCredentialsIdentifier());
     }

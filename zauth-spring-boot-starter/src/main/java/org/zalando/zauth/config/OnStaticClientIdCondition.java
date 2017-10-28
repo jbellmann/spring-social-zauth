@@ -15,11 +15,10 @@
  */
 package org.zalando.zauth.config;
 
-import static org.springframework.util.StringUtils.hasText;
-
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.ConfigurationCondition;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.StringUtils;
 
 class OnStaticClientIdCondition implements ConfigurationCondition {
 
@@ -30,6 +29,9 @@ class OnStaticClientIdCondition implements ConfigurationCondition {
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        return hasText(context.getEnvironment().getProperty("zauth.client-id", "")) || hasText(context.getEnvironment().getProperty("zauth.clientId", ""));
+        String client_id = context.getEnvironment().getProperty("zauth.client-id", "");
+        String clientId = context.getEnvironment().getProperty("zauth.clientId", "");
+        boolean result = StringUtils.hasText(clientId) || StringUtils.hasText(client_id);
+        return result;
     }
 }
