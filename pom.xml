@@ -1,49 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.zalando.stups.build</groupId>
-		<artifactId>stups-parent</artifactId>
-		<version>6</version>
-		<relativePath />
-	</parent>
-	<groupId>org.zalando.zauth</groupId>
-	<artifactId>spring-social-zauth-parent</artifactId>
-	<version>0.10.11-SNAPSHOT</version>
-	<packaging>pom</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.zalando.stups.build</groupId>
+        <artifactId>stups-parent</artifactId>
+        <version>6</version>
+        <relativePath />
+    </parent>
+    <groupId>org.zalando.zauth</groupId>
+    <artifactId>spring-social-zauth-parent</artifactId>
+    <version>0.10.11-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>spring-social-zauth</module>
-		<module>zauth-spring-boot-starter</module>
-		<!-- <module>samples</module> -->
-		<!-- <module>zauth-services</module> -->
-	</modules>
+    <modules>
+        <module>spring-social-zauth</module>
+        <module>zauth-spring-boot-starter</module>
+    </modules>
 
-	<scm>
-		<url>https://github.com/jbellmann/spring-social-zauth</url>
-		<connection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</connection>
-		<developerConnection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+    <scm>
+        <url>https://github.com/jbellmann/spring-social-zauth</url>
+        <connection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</connection>
+        <developerConnection>scm:git:https://github.com/jbellmann/spring-social-zauth.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<organization>
-		<name>Zalando SE</name>
-		<url>https://github.com/zalando</url>
-	</organization>
+    <organization>
+        <name>Zalando SE</name>
+        <url>https://github.com/zalando</url>
+    </organization>
 
-	<developers>
-		<developer>
-			<id>jbellman</id>
-			<name>Jörg Bellmann</name>
-			<organization>Zalando SE</organization>
-			<email>joerg.bellmann@zalando.de</email>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>jbellman</id>
+            <name>Jörg Bellmann</name>
+            <organization>Zalando SE</organization>
+            <email>joerg.bellmann@zalando.de</email>
+        </developer>
+    </developers>
 </project>
