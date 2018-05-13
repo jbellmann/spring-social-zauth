@@ -17,12 +17,15 @@ package org.springframework.social.zauth.security;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.social.oauth2.ClientCredentialsSupplier;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.social.security.provider.OAuth2AuthenticationService;
 import org.springframework.social.zauth.api.ZAuth;
 import org.springframework.social.zauth.connect.ZAuthConnectionFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * @author jbellmann
@@ -33,7 +36,8 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
 
     public ZAuthAuthenticationService(ClientCredentialsSupplier clientCredentialsSupplier,
             Map<String, String> additionalParams, String authorizationEndpoint, String tokenEndpoint) {
-        super(new ZAuthConnectionFactory(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint, additionalParams));
+        super(new ZAuthConnectionFactory(clientCredentialsSupplier, authorizationEndpoint, tokenEndpoint,
+                additionalParams));
         Assert.notNull(additionalParams, "'additionalParams' should not be null");
         this.additionalParams = additionalParams;
     }
@@ -44,4 +48,42 @@ public class ZAuthAuthenticationService extends OAuth2AuthenticationService<ZAut
             params.add(entry.getKey(), entry.getValue());
         }
     }
+
+    @Override
+    protected StringBuffer getProxyHeaderAwareRequestURL(HttpServletRequest request) {
+        String host = request.getHeader("Host");
+        if (StringUtils.isEmpty(host)) {
+            return request.getRequestURL();
+        }
+
+        if(host.indexOf(":") > -1) {
+            host = host.substring(0, host.indexOf(":"));
+        }
+
+        String scheme = request.getScheme();
+        String port = "" + request.getServerPort();
+        StringBuffer sb = new StringBuffer();
+        String schemeHeader = request.getHeader("X-Forwarded-Proto");
+        String portHeader = request.getHeader("X-Forwarded-Port");
+        scheme = StringUtils.isEmpty(schemeHeader) ? scheme : schemeHeader;
+        port = StringUtils.isEmpty(portHeader) ? port : portHeader;
+
+        if (scheme.equals("http") && port.equals("80")) {
+            port = "";
+        }
+        if (scheme.equals("https") && port.equals("443")) {
+            port = "";
+        }
+
+        sb.append(scheme);
+        sb.append("://");
+        sb.append(host);
+        if (StringUtils.hasLength(port)) {
+            sb.append(":");
+            sb.append(port);
+        }
+        sb.append(request.getRequestURI());
+        return sb;
+    }
+
 }

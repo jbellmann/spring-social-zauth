@@ -136,14 +136,6 @@ public class DynamicOAuth2Template implements OAuth2Operations {
     }
 
     @Override
-    @Deprecated
-    public AccessGrant refreshAccess(String refreshToken, String scope,
-            MultiValueMap<String, String> additionalParameters) {
-        additionalParameters.set("scope", scope);
-        return refreshAccess(refreshToken, additionalParameters);
-    }
-
-    @Override
     public AccessGrant refreshAccess(String refreshToken, MultiValueMap<String, String> additionalParameters) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         if (useParametersForClientAuthentication) {
